@@ -30,7 +30,7 @@ function showAuth() {
 function showMain(user) {
   authScreen.style.display = "none";
   mainScreen.style.display = "block";
-  userEmailDisplay.textContent = user.email;
+  userEmailDisplay.textContent = "@" + maskEmail(user.email);
   loadTweets();
 }
 
@@ -128,11 +128,15 @@ async function loadTweets() {
 
   tweetList.innerHTML = data.map((t) => `
     <div class="tweet-item">
-      <span class="tweet-author">${escapeHtml(t.author_email)}</span>
+      <span class="tweet-author">@${escapeHtml(maskEmail(t.author_email))}</span>
       <p class="tweet-content">${escapeHtml(t.content)}</p>
       <span class="tweet-time">${formatDate(t.created_at)}</span>
     </div>
   `).join("");
+}
+
+function maskEmail(email) {
+  return email.split("@")[0];
 }
 
 function escapeHtml(str) {
